@@ -1,11 +1,12 @@
 // LeaveMeAlone Game by Netologiya. All RightsReserved.
 
 #pragma once
-
+// It is unused
+// TODO Delete this class and rename ALMADefaultCharacter1 to ALMADefaultCharacter
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "LMADefaultCharacter.generated.h"
-
+/*
 UCLASS()
 class LEAVEMEALONE_API ALMADefaultCharacter : public ACharacter
 {
@@ -27,3 +28,4 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
+*/

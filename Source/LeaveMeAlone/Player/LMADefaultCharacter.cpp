@@ -1,6 +1,6 @@
 // LeaveMeAlone Game by Netologiya. All RightsReserved.
 
-
+/*
 #include "Player/LMADefaultCharacter.h"
 
 // Sets default values
@@ -31,4 +31,4 @@ void ALMADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-
+*/

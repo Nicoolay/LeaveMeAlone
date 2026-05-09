@@ -6,24 +6,36 @@
 #include "GameFramework/Character.h"
 #include "LMADefaultCharacter1.generated.h"
 
+class UCameraComponent;    // Camera
+class USpringArmComponent; // Sort of camera manager
+
 UCLASS()
-class LEAVEMEALONE_API ALMADefaultCharacter1 : public ACharacter
-{
-	GENERATED_BODY()
+class LEAVEMEALONE_API ALMADefaultCharacter1 : public ACharacter {
+  GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	ALMADefaultCharacter1();
+  // Sets default values for this character's properties
+  ALMADefaultCharacter1();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+  // Called when the game starts or when spawned
+  virtual void BeginPlay() override;
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+  USpringArmComponent *SpringArmComponent;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+  UCameraComponent *CameraComponent;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+public:
+  // Called every frame
+  virtual void Tick(float DeltaTime) override;
 
+  // Called to bind functionality to input
+  virtual void SetupPlayerInputComponent(
+      class UInputComponent *PlayerInputComponent) override;
+
+private:
+  float YRotation = -75.0f;  // – defines camera rotation on Y
+  float ArmLength = 1400.0f; //  defiens lenght camera arm
+  float FOV = 55.0f;         // defines angle of camera view
 };
