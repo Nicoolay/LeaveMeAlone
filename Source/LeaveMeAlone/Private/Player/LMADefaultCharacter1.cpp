@@ -2,13 +2,11 @@
 
 #include "Player/LMADefaultCharacter1.h"
 #include "Camera/CameraComponent.h"
+#include "Components/DecalComponent.h"
+#include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Components/DecalComponent.h"
-#include "Components/InputComponent.h"
-
-
 
 // Sets default values
 ALMADefaultCharacter1::ALMADefaultCharacter1() {
@@ -50,7 +48,7 @@ void ALMADefaultCharacter1::Tick(float DeltaTime) {
   Super::Tick(DeltaTime);
 
   APlayerController *PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-  
+
   if (PC) {
     FHitResult ResultHit;
     PC->GetHitResultUnderCursor(ECC_GameTraceChannel1, true, ResultHit);
@@ -72,6 +70,7 @@ void ALMADefaultCharacter1::SetupPlayerInputComponent(
                                  &ALMADefaultCharacter1::MoveForward);
   PlayerInputComponent->BindAxis("MoveRight", this,
                                  &ALMADefaultCharacter1::MoveRight);
+  PlayerInputComponent->BindAxis("Zoom", this, &ALMADefaultCharacter1::Zoom);
 }
 
 void ALMADefaultCharacter1::MoveForward(float Value) {
@@ -80,4 +79,14 @@ void ALMADefaultCharacter1::MoveForward(float Value) {
 
 void ALMADefaultCharacter1::MoveRight(float Value) {
   AddMovementInput(GetActorRightVector(), Value);
+}
+
+void ALMADefaultCharacter1::Zoom(float AxisValue) {
+  if (SpringArmComponent && AxisValue != 0.0f) {
+    float NewLength = SpringArmComponent->TargetArmLength;
+
+    NewLength -= AxisValue * ZoomSpeed;
+    NewLength = FMath::Clamp(NewLength, MinZoomLength, MaxZoomLength);
+    SpringArmComponent->TargetArmLength = NewLength;
+  }
 }
