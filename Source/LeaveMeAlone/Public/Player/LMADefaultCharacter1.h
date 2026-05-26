@@ -8,6 +8,7 @@
 
 class UCameraComponent;    // Camera
 class USpringArmComponent; // Sort of camera manager
+class ULMAHealthComponent; // Health
 
 UCLASS()
 class LEAVEMEALONE_API ALMADefaultCharacter1 : public ACharacter {
@@ -31,6 +32,9 @@ protected:
 
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
   UCameraComponent *CameraComponent;
+
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
+  ULMAHealthComponent *HealthComponent;
   
 public:
   // Called every frame

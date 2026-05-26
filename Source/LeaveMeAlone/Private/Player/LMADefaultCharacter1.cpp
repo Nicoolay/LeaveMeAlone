@@ -7,6 +7,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/LMAHealthComponent.h"
+
 
 // Sets default values
 ALMADefaultCharacter1::ALMADefaultCharacter1() {
@@ -31,6 +33,9 @@ ALMADefaultCharacter1::ALMADefaultCharacter1() {
   CameraComponent->SetupAttachment(SpringArmComponent);
   CameraComponent->SetFieldOfView(FOV);
   CameraComponent->bUsePawnControlRotation = false;
+
+  HealthComponent =
+      CreateDefaultSubobject<ULMAHealthComponent>("HealthComponent");
 }
 
 // Called when the game starts or when spawned

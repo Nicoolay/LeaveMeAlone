@@ -18,7 +18,7 @@ ULMAHealthComponent::ULMAHealthComponent()
 void ULMAHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	Health = MaxHealth;
 	// ...
 	
 }
