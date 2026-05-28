@@ -22,13 +22,6 @@ protected:
   virtual void BeginPlay() override;
   UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
   float MaxHealth = 100.0f;
-
-public:
-  // Called every frame
-  virtual void
-  TickComponent(float DeltaTime, ELevelTick TickType,
-                FActorComponentTickFunction *ThisTickFunction) override;
-
 private:
   float Health = 0.0f;
 };
