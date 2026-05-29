@@ -9,6 +9,7 @@
 class UCameraComponent;    // Camera
 class USpringArmComponent; // Sort of camera manager
 class ULMAHealthComponent; // Health
+class UAnimMontage;
 
 UCLASS()
 class LEAVEMEALONE_API ALMADefaultCharacter1 : public ACharacter {
@@ -18,17 +19,18 @@ public:
   // Sets default values for this character's properties
   ALMADefaultCharacter1();
 
-  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
-  ULMAHealthComponent *HealthComponent;
+  UFUNCTION()
+  ULMAHealthComponent *GetHealthComponent() const { return HealthComponent; }
 
 protected:
-  // Called when the game starts or when spawned
-  virtual void BeginPlay() override;
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
   USpringArmComponent *SpringArmComponent;
 
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
   UCameraComponent *CameraComponent;
+
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
+  ULMAHealthComponent *HealthComponent;
 
   UPROPERTY()
   UDecalComponent *CurrentCursor = nullptr;
@@ -41,6 +43,8 @@ protected:
 
   UPROPERTY(EditDefaultsOnly, Category = "Animation")
   UAnimMontage *DeathMontage;
+
+  virtual void BeginPlay() override;
 
 public:
   // Called every frame
@@ -71,4 +75,8 @@ private:
   float MaxZoomLength = 1400.0f;
 
   void OnDeath();
+
+  void RotationPlayerOnCursor();
+
+  void OnHealthChanged(float NewHealth);
 };

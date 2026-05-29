@@ -34,7 +34,6 @@ ALMADefaultCharacter1::ALMADefaultCharacter1() {
   CameraComponent->SetupAttachment(SpringArmComponent);
   CameraComponent->SetFieldOfView(FOV);
   CameraComponent->bUsePawnControlRotation = false;
-
   HealthComponent =
       CreateDefaultSubobject<ULMAHealthComponent>("HealthComponent");
 }
@@ -48,26 +47,20 @@ void ALMADefaultCharacter1::BeginPlay() {
         GetWorld(), CursorMaterial, CursorSize, FVector(0));
   }
 
+OnHealthChanged(HealthComponent->GetHealth());
   HealthComponent->OnDeath.AddUObject(this, &ALMADefaultCharacter1::OnDeath);
+  HealthComponent->OnHealthChanged.AddUObject(
+      this, &ALMADefaultCharacter1::OnHealthChanged);
 }
 
 // Called every frame
 void ALMADefaultCharacter1::Tick(float DeltaTime) {
   Super::Tick(DeltaTime);
 
-  APlayerController *PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-
-  if (PC) {
-    FHitResult ResultHit;
-    PC->GetHitResultUnderCursor(ECC_GameTraceChannel1, true, ResultHit);
-    float FindRotatorResultYaw = UKismetMathLibrary::FindLookAtRotation(
-                                     GetActorLocation(), ResultHit.Location)
-                                     .Yaw;
-    SetActorRotation(FQuat(FRotator(0.0f, FindRotatorResultYaw, 0.0f)));
-    if (CurrentCursor) {
-      CurrentCursor->SetWorldLocation(ResultHit.Location);
+    if (!(HealthComponent->IsDead())) {
+      RotationPlayerOnCursor();
     }
-  }
+
 }
 
 // Called to bind functionality to input
@@ -100,7 +93,36 @@ void ALMADefaultCharacter1::Zoom(float AxisValue) {
 }
 
 void ALMADefaultCharacter1::OnDeath() {
+  CurrentCursor->DestroyRenderState_Concurrent();
+
   PlayAnimMontage(DeathMontage);
+
   GetCharacterMovement()->DisableMovement();
+
   SetLifeSpan(5.0f);
+
+  if (Controller) {
+    Controller->ChangeState(NAME_Spectating);
+  }
+}
+
+
+void ALMADefaultCharacter1::RotationPlayerOnCursor() {
+  APlayerController *PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+  if (PC) {
+    FHitResult ResultHit;
+    PC->GetHitResultUnderCursor(ECC_GameTraceChannel1, true, ResultHit);
+    float FindRotatorResultYaw = UKismetMathLibrary::FindLookAtRotation(
+                                     GetActorLocation(), ResultHit.Location)
+                                     .Yaw;
+    SetActorRotation(FQuat(FRotator(0.0f, FindRotatorResultYaw, 0.0f)));
+    if (CurrentCursor) {
+      CurrentCursor->SetWorldLocation(ResultHit.Location);
+    }
+  }
+}
+
+void ALMADefaultCharacter1::OnHealthChanged(float NewHealth) {
+  GEngine->AddOnScreenDebugMessage(
+      -1, 2.0f, FColor::Red, FString::Printf(TEXT("Health = %f"), NewHealth));
 }

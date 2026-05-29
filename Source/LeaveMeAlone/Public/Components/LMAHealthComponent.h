@@ -6,8 +6,10 @@
 #include "CoreMinimal.h"
 #include "LMAHealthComponent.generated.h"
 
+
 DECLARE_MULTICAST_DELEGATE(FOnDeath)
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float);
+//FOnHealthChanged OnHealthChanged;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class LEAVEMEALONE_API ULMAHealthComponent : public UActorComponent {
@@ -41,4 +43,5 @@ private:
   void OnTakeAnyDamage(AActor *DamagedActor, float Damage,
                        const class UDamageType *DamageType,
                        class AController *InstigatedBy, AActor *DamageCauser);
+
 };
