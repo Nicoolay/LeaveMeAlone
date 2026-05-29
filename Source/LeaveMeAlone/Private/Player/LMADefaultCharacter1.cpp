@@ -8,7 +8,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/LMAHealthComponent.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Engine/Engine.h"
 
 // Sets default values
 ALMADefaultCharacter1::ALMADefaultCharacter1() {
@@ -46,6 +47,8 @@ void ALMADefaultCharacter1::BeginPlay() {
     CurrentCursor = UGameplayStatics::SpawnDecalAtLocation(
         GetWorld(), CursorMaterial, CursorSize, FVector(0));
   }
+
+  HealthComponent->OnDeath.AddUObject(this, &ALMADefaultCharacter1::OnDeath);
 }
 
 // Called every frame
@@ -94,4 +97,10 @@ void ALMADefaultCharacter1::Zoom(float AxisValue) {
     NewLength = FMath::Clamp(NewLength, MinZoomLength, MaxZoomLength);
     SpringArmComponent->TargetArmLength = NewLength;
   }
+}
+
+void ALMADefaultCharacter1::OnDeath() {
+  PlayAnimMontage(DeathMontage);
+  GetCharacterMovement()->DisableMovement();
+  SetLifeSpan(5.0f);
 }

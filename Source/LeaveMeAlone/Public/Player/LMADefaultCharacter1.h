@@ -13,16 +13,13 @@ class ULMAHealthComponent; // Health
 UCLASS()
 class LEAVEMEALONE_API ALMADefaultCharacter1 : public ACharacter {
   GENERATED_BODY()
-  
+
 public:
   // Sets default values for this character's properties
   ALMADefaultCharacter1();
-  UPROPERTY()
-  UDecalComponent *CurrentCursor = nullptr;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
-  UMaterialInterface *CursorMaterial = nullptr;
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
-  FVector CursorSize = FVector(20.0f, 40.0f, 40.0f);
+
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
+  ULMAHealthComponent *HealthComponent;
 
 protected:
   // Called when the game starts or when spawned
@@ -33,9 +30,18 @@ protected:
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
   UCameraComponent *CameraComponent;
 
-  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
-  ULMAHealthComponent *HealthComponent;
-  
+  UPROPERTY()
+  UDecalComponent *CurrentCursor = nullptr;
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
+  UMaterialInterface *CursorMaterial = nullptr;
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
+  FVector CursorSize = FVector(20.0f, 40.0f, 40.0f);
+
+  UPROPERTY(EditDefaultsOnly, Category = "Animation")
+  UAnimMontage *DeathMontage;
+
 public:
   // Called every frame
   virtual void Tick(float DeltaTime) override;
@@ -50,9 +56,9 @@ private:
   float FOV = 55.0f;         // defines angle of camera view
   void MoveForward(float Value);
   void MoveRight(float Value);
-  void Zoom(float AxisValue); 
+  void Zoom(float AxisValue);
 
-      UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Zoom",
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Zoom",
             meta = (AllowPrivateAccess = "true"))
   float ZoomSpeed = 200.0f;
 
@@ -64,4 +70,5 @@ private:
             meta = (AllowPrivateAccess = "true"))
   float MaxZoomLength = 1400.0f;
 
+  void OnDeath();
 };
