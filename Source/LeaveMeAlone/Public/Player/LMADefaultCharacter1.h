@@ -44,6 +44,30 @@ protected:
   UPROPERTY(EditDefaultsOnly, Category = "Animation")
   UAnimMontage *DeathMontage;
 
+
+  UPROPERTY(EditAnywhere, Category = "Sprint")
+  float Stamina = 100.0f; 
+
+  UPROPERTY(EditAnywhere, Category = "Sprint")
+  float MaxStamina = 100.0f;
+
+  UPROPERTY(EditAnywhere, Category = "Sprint")
+  float SprintCost = 0.3f;
+
+  UPROPERTY(EditAnywhere, Category = "Sprint")
+  float StaminaRecoveryRate = 1.3f; 
+
+  UPROPERTY(BlueprintReadOnly, Category = "Sprint")
+  bool bIsSprinting; 
+
+  UFUNCTION(BlueprintCallable)
+  bool IsSprinting() const;
+
+  UPROPERTY(EditAnywhere, Category = "Components")
+  bool EnableLog = false;
+
+  FTimerHandle TimerHandle;
+
   virtual void BeginPlay() override;
 
 public:
@@ -79,4 +103,11 @@ private:
   void RotationPlayerOnCursor();
 
   void OnHealthChanged(float NewHealth);
+
+  void BeginSprint();
+  void EndSprint();
+  void ControlStamina();
+  bool IsMovingForward();
+
+
 };
