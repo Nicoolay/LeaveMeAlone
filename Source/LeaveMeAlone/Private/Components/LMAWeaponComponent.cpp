@@ -66,14 +66,14 @@ void ULMAWeaponComponent::OnNotifyReloadFinished(
   }
 }
 
-bool ULMAWeaponComponent::CanReload() const {
-  return !AnimReloading && Weapon->CanReload();
-}
+//bool ULMAWeaponComponent::CanReload() const {
+//  return !AnimReloading && Weapon->CanReload();
+//}
 
-void ULMAWeaponComponent::Reload() {
-  if (!CanReload())
-    return;
-  AnimReloading = true;
-  ACharacter *Character = Cast<ACharacter>(GetOwner());
-  Character->PlayAnimMontage(ReloadMontage);
-}
+//void ULMAWeaponComponent::Reload() {
+//  if (!CanReload())
+//    return;
+//  AnimReloading = true;
+//  ACharacter *Character = Cast<ACharacter>(GetOwner());
+//  Character->PlayAnimMontage(ReloadMontage);
+//}

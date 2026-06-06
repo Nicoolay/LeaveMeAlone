@@ -5,6 +5,7 @@
 #include "Components/DecalComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/LMAHealthComponent.h"
+#include "Components/LMAWeaponComponent.h"
 #include "Engine/Engine.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -36,6 +37,24 @@ ALMADefaultCharacter1::ALMADefaultCharacter1() {
   CameraComponent->bUsePawnControlRotation = false;
   HealthComponent =
       CreateDefaultSubobject<ULMAHealthComponent>("HealthComponent");
+  WeaponComponent = CreateDefaultSubobject<ULMAWeaponComponent>("Weapon");
+}
+
+// Called to bind functionality to input
+void ALMADefaultCharacter1::SetupPlayerInputComponent(
+    UInputComponent *PlayerInputComponent) {
+  Super::SetupPlayerInputComponent(PlayerInputComponent);
+  PlayerInputComponent->BindAxis("MoveForward", this,
+                                 &ALMADefaultCharacter1::MoveForward);
+  PlayerInputComponent->BindAxis("MoveRight", this,
+                                 &ALMADefaultCharacter1::MoveRight);
+  PlayerInputComponent->BindAxis("Zoom", this, &ALMADefaultCharacter1::Zoom);
+  PlayerInputComponent->BindAction("Sprint", IE_Pressed, this,
+                                   &ALMADefaultCharacter1::BeginSprint);
+  PlayerInputComponent->BindAction("Sprint", IE_Released, this,
+                                   &ALMADefaultCharacter1::EndSprint);
+  PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent,
+                                   &ULMAWeaponComponent::Fire);
 }
 
 // Called when the game starts or when spawned
@@ -62,21 +81,6 @@ void ALMADefaultCharacter1::Tick(float DeltaTime) {
   if (!(HealthComponent->IsDead())) {
     RotationPlayerOnCursor();
   }
-}
-
-// Called to bind functionality to input
-void ALMADefaultCharacter1::SetupPlayerInputComponent(
-    UInputComponent *PlayerInputComponent) {
-  Super::SetupPlayerInputComponent(PlayerInputComponent);
-  PlayerInputComponent->BindAxis("MoveForward", this,
-                                 &ALMADefaultCharacter1::MoveForward);
-  PlayerInputComponent->BindAxis("MoveRight", this,
-                                 &ALMADefaultCharacter1::MoveRight);
-  PlayerInputComponent->BindAxis("Zoom", this, &ALMADefaultCharacter1::Zoom);
-  PlayerInputComponent->BindAction("Sprint", IE_Pressed, this,
-                                   &ALMADefaultCharacter1::BeginSprint);
-  PlayerInputComponent->BindAction("Sprint", IE_Released, this,
-                                   &ALMADefaultCharacter1::EndSprint);
 }
 
 void ALMADefaultCharacter1::MoveForward(float Value) {

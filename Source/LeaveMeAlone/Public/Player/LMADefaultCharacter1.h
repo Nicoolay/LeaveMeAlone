@@ -9,6 +9,7 @@
 class UCameraComponent;    // Camera
 class USpringArmComponent; // Sort of camera manager
 class ULMAHealthComponent; // Health
+class ULMAWeaponComponent;
 class UAnimMontage;
 
 UCLASS()
@@ -44,9 +45,11 @@ protected:
   UPROPERTY(EditDefaultsOnly, Category = "Animation")
   UAnimMontage *DeathMontage;
 
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+  ULMAWeaponComponent *WeaponComponent;
 
   UPROPERTY(EditAnywhere, Category = "Sprint")
-  float Stamina = 100.0f; 
+  float Stamina = 100.0f;
 
   UPROPERTY(EditAnywhere, Category = "Sprint")
   float MaxStamina = 100.0f;
@@ -55,10 +58,10 @@ protected:
   float SprintCost = 0.3f;
 
   UPROPERTY(EditAnywhere, Category = "Sprint")
-  float StaminaRecoveryRate = 1.3f; 
+  float StaminaRecoveryRate = 1.3f;
 
   UPROPERTY(BlueprintReadOnly, Category = "Sprint")
-  bool bIsSprinting; 
+  bool bIsSprinting;
 
   UFUNCTION(BlueprintCallable)
   bool IsSprinting() const;
@@ -108,6 +111,4 @@ private:
   void EndSprint();
   void ControlStamina();
   bool IsMovingForward();
-
-
 };

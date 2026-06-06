@@ -22,7 +22,7 @@ void ALMABaseWeapon::BeginPlay() {
 
 void ALMABaseWeapon::Shoot() {
   const FTransform SocketTransform =
-      WeaponComponent->GetSocketTransform("Muzzle");
+      WeaponComponent->GetSocketTransform("MuzzleFlash");
   const FVector TraceStart = SocketTransform.GetLocation();
   const FVector ShootDirection =
       SocketTransform.GetRotation().GetForwardVector();
