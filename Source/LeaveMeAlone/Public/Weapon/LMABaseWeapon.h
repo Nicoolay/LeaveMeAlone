@@ -31,6 +31,7 @@ public:
 
   void Fire();
   void ChangeClip();
+  bool CanReload() const;
 
 protected:
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")

@@ -1,9 +1,7 @@
 // LeaveMeAlone Game by Netologiya. All RightsReserved.
 
-
-
 #include "Components/LMAWeaponComponent.h"
-//#include "Animations/LMAReloadFinishedAnimNotify.h"
+#include "Animations/LMAReloadFinishedAnimNotify.h"
 #include "GameFramework/Character.h"
 #include "Weapon/LMABaseWeapon.h"
 
@@ -21,7 +19,7 @@ void ULMAWeaponComponent::BeginPlay() {
   Super::BeginPlay();
 
   SpawnWeapon();
-  //InitAnimNotify();
+  InitAnimNotify();
 }
 
 void ULMAWeaponComponent::TickComponent(
@@ -43,20 +41,20 @@ void ULMAWeaponComponent::SpawnWeapon() {
   }
 }
 
-//void ULMAWeaponComponent::InitAnimNotify() {
-//  if (!ReloadMontage)
-//    return;
-//
-//  const auto NotifiesEvents = ReloadMontage->Notifies;
-//  for (auto NotifyEvent : NotifiesEvents) {
-//    auto ReloadFinish = Cast<ULMAReloadFinishedAnimNotify>(NotifyEvent.Notify);
-//    if (ReloadFinish) {
-//      ReloadFinish->OnNotifyReloadFinished.AddUObject(
-//          this, &ULMAWeaponComponent::OnNotifyReloadFinished);
-//      break;
-//    }
-//  }
-//}
+void ULMAWeaponComponent::InitAnimNotify() {
+  if (!ReloadMontage)
+    return;
+
+  const auto NotifiesEvents = ReloadMontage->Notifies;
+  for (auto NotifyEvent : NotifiesEvents) {
+    auto ReloadFinish = Cast<ULMAReloadFinishedAnimNotify>(NotifyEvent.Notify);
+    if (ReloadFinish) {
+      ReloadFinish->OnNotifyReloadFinished.AddUObject(
+          this, &ULMAWeaponComponent::OnNotifyReloadFinished);
+      break;
+    }
+  }
+}
 
 void ULMAWeaponComponent::OnNotifyReloadFinished(
     USkeletalMeshComponent *SkeletalMesh) {
@@ -66,14 +64,19 @@ void ULMAWeaponComponent::OnNotifyReloadFinished(
   }
 }
 
-//bool ULMAWeaponComponent::CanReload() const {
-//  return !AnimReloading && Weapon->CanReload();
-//}
 
-//void ULMAWeaponComponent::Reload() {
-//  if (!CanReload())
-//    return;
-//  AnimReloading = true;
-//  ACharacter *Character = Cast<ACharacter>(GetOwner());
-//  Character->PlayAnimMontage(ReloadMontage);
-//}
+
+bool ULMAWeaponComponent::CanReload() const {
+  // return !AnimReloading && Weapon->CanReload();
+  return !AnimReloading && Weapon->CanReload();
+}
+
+void ULMAWeaponComponent::Reload() {
+  if (!CanReload()) {
+    return;
+  }
+  Weapon->ChangeClip();
+  AnimReloading = true;
+  ACharacter *Character = Cast<ACharacter>(GetOwner());
+  Character->PlayAnimMontage(ReloadMontage);
+}

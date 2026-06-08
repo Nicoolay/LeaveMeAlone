@@ -61,3 +61,7 @@ void ALMABaseWeapon::ChangeClip() {
 }
 
 void ALMABaseWeapon::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
+
+bool ALMABaseWeapon::CanReload() const {
+  //return !IsClipFull() && CurrentAmmoWeapon.Bullets < AmmoWeapon.Bullets;
+}
