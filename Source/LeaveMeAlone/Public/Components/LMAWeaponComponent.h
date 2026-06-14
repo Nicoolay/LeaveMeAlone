@@ -17,7 +17,14 @@ public:
   ULMAWeaponComponent();
 
   void Fire();
+  UFUNCTION(BlueprintCallable)
+  void NoFire();
+
   void Reload();
+  UFUNCTION(BlueprintCallable)
+  bool GetCurrentWeaponAmmo(FAmmoWeapon &AmmoWeapon) const;
+  UFUNCTION(BlueprintCallable)
+  ALMABaseWeapon *GetWeaponObject() const;
 
 protected:
   UPROPERTY(EditDefaultsOnly, Category = "Weapon")
@@ -44,4 +51,7 @@ private:
 
   void OnNotifyReloadFinished(USkeletalMeshComponent *SkeletalMesh);
   bool CanReload() const;
+
+  	UFUNCTION()
+  void ClipEmpty();
 };

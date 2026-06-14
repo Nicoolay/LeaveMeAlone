@@ -55,6 +55,8 @@ void ALMADefaultCharacter1::SetupPlayerInputComponent(
                                    &ALMADefaultCharacter1::EndSprint);
   PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent,
                                    &ULMAWeaponComponent::Fire);
+  PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent,
+                                   &ULMAWeaponComponent::NoFire);
   PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent,
                                    &ULMAWeaponComponent::Reload);
 }

@@ -12,7 +12,17 @@ ALMABaseWeapon::ALMABaseWeapon() {
   SetRootComponent(WeaponComponent);
 }
 
-void ALMABaseWeapon::Fire() { Shoot(); }
+void ALMABaseWeapon::Fire() {
+  if (!IsCurrentClipEmpty()) {
+    GetWorld()->GetTimerManager().SetTimer(FireTimerHandle, this,
+                                           &ALMABaseWeapon::Shoot,
+                                           AmmoWeapon.FireRate, true);
+  }
+}
+
+void ALMABaseWeapon::NoFire() {
+  GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
+}
 
 void ALMABaseWeapon::BeginPlay() {
   Super::BeginPlay();
@@ -43,17 +53,23 @@ void ALMABaseWeapon::Shoot() {
 }
 
 void ALMABaseWeapon::DecrementBullets() {
-  CurrentAmmoWeapon.Bullets--;
-  UE_LOG(LogWeapon, Display, TEXT("Bullets = %s"),
-         *FString::FromInt(CurrentAmmoWeapon.Bullets));
-
+  if (!IsCurrentClipEmpty()) {
+    CurrentAmmoWeapon.Bullets--;
+  }
   if (IsCurrentClipEmpty()) {
-    ChangeClip();
+    ClipEmpty.Broadcast();
   }
 }
 
 bool ALMABaseWeapon::IsCurrentClipEmpty() const {
   return CurrentAmmoWeapon.Bullets == 0;
+}
+bool ALMABaseWeapon::IsClipFull() const {
+  return CurrentAmmoWeapon.Bullets == AmmoWeapon.Bullets;
+}
+
+bool ALMABaseWeapon::CanReload() const {
+  return !IsClipFull() && CurrentAmmoWeapon.Bullets < AmmoWeapon.Bullets;
 }
 
 void ALMABaseWeapon::ChangeClip() {
@@ -62,14 +78,4 @@ void ALMABaseWeapon::ChangeClip() {
          CurrentAmmoWeapon.Bullets);
 }
 
-void ALMABaseWeapon::Tick(float DeltaTime) {
-    Super::Tick(DeltaTime); 
-}
-
-bool ALMABaseWeapon::IsClipFull() const {
-  return CurrentAmmoWeapon.Bullets == AmmoWeapon.Bullets;
-}
-
-bool ALMABaseWeapon::CanReload() const {
-  return !IsClipFull() && CurrentAmmoWeapon.Bullets < AmmoWeapon.Bullets;
-}
+void ALMABaseWeapon::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
