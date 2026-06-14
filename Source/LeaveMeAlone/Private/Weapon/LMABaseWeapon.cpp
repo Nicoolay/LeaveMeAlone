@@ -58,10 +58,18 @@ bool ALMABaseWeapon::IsCurrentClipEmpty() const {
 
 void ALMABaseWeapon::ChangeClip() {
   CurrentAmmoWeapon.Bullets = AmmoWeapon.Bullets;
+  UE_LOG(LogWeapon, Warning, TEXT("ChangeClip: new bullets = %d"),
+         CurrentAmmoWeapon.Bullets);
 }
 
-void ALMABaseWeapon::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
+void ALMABaseWeapon::Tick(float DeltaTime) {
+    Super::Tick(DeltaTime); 
+}
+
+bool ALMABaseWeapon::IsClipFull() const {
+  return CurrentAmmoWeapon.Bullets == AmmoWeapon.Bullets;
+}
 
 bool ALMABaseWeapon::CanReload() const {
-  //return !IsClipFull() && CurrentAmmoWeapon.Bullets < AmmoWeapon.Bullets;
+  return !IsClipFull() && CurrentAmmoWeapon.Bullets < AmmoWeapon.Bullets;
 }

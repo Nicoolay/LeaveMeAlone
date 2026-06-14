@@ -49,6 +49,7 @@ protected:
 
   void DecrementBullets();
   bool IsCurrentClipEmpty() const;
+  bool IsClipFull() const;
 
 public:
   virtual void Tick(float DeltaTime) override;

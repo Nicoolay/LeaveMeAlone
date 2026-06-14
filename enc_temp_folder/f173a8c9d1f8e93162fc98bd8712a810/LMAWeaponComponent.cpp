@@ -110,4 +110,8 @@ void ULMAWeaponComponent::OnNotifyReloadFinished(
     UE_LOG(LogTemp, Warning, TEXT("Mesh mismatch or character null!"));
   }
 
+
+  //Character->StopAnimMontage(ReloadMontage);
+  //UE_LOG(LogTemp, Warning, TEXT("StopAnimMontage executed"));
+
 }
